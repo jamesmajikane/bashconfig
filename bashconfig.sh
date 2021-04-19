@@ -105,10 +105,26 @@ admin_user_ssh_keycheck_2(){
 		exit
 	fi
 }
+#############################################################################################################
 
+# Secure SSH
+secure_ssh(){
+    clear
+    echo -e "\e[34m---------------------------------------------------------------------------------------------------------\e[00m"
+    echo -e "\e[93m[+]\e[00m Securing SSH"
+    echo -e "\e[34m---------------------------------------------------------------------------------------------------------\e[00m"
+    echo ""
+    echo -n " Securing SSH..."
+    spinner
+    cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+    cp templates/sshd_config /etc/ssh/sshd_config
+    service ssh restart
+    say_done
+  }
 config_host
 config_timezone
 update_system
 admin_user
 admin_user_ssh_keycheck
 admin_user_ssh_keycheck_2
+secure_ssh
