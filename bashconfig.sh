@@ -1,17 +1,37 @@
 #!/bin/bash
+# Adapted from JShielder by Jason Soto @Jsitech
 source helpers.sh
+
+##############################################################################################################
+
+# Check if running with root User
+
+clear
+
+check_root() {
+if [ "$USER" != "root" ]; then
+      echo "Permission Denied"
+      echo "Can only be run by root"
+      exit
+else
+      clear
+      echo -n "Press ENTER to begin securing." ; read fooobar1
+fi
+}
+
+##############################################################################################################
 
 #############################################################################################################
 
 
 # Configure Hostname
 config_host() {
-echo -n " ¿Do you Wish to Set a HostName? (y/n): "; read config_host
+echo -n " Do you Wish to Set a HostName? (y/n): "; read config_host
 if [ "$config_host" == "y" ]; then
     serverip=$(__get_ip)
     echo " Type a Name to Identify this server :"
     echo -n " (For Example: myserver): "; read host_name
-    echo -n " ¿Type Domain Name?: "; read domain_name
+    echo -n " Type Domain Name?: "; read domain_name
     echo $host_name > /etc/hostname
     hostname -F /etc/hostname
     echo "127.0.0.1    localhost.localdomain      localhost" >> /etc/hosts
@@ -121,6 +141,22 @@ secure_ssh(){
     service ssh restart
     say_done
   }
+
+##############################################################################################################
+
+# Install Additional Packages
+additional_packages(){
+  clear
+  echo -e "\e[34m---------------------------------------------------------------------------------------------------------\e[00m"
+    echo -e "\e[93m[+]\e[00m Installing Additional Packages"
+    echo -e "\e[34m---------------------------------------------------------------------------------------------------------\e[00m"
+    echo ""
+    echo "Install tree............."; apt install tree
+    echo "Install Vim.............."; apt install vim
+    echo "Install Nano............."; apt install nano
+    say_done
+  }
+check_root
 config_host
 config_timezone
 update_system
@@ -128,3 +164,4 @@ admin_user
 admin_user_ssh_keycheck
 admin_user_ssh_keycheck_2
 secure_ssh
+additional_packages
