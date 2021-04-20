@@ -165,6 +165,7 @@ pi_stuff(){
     groupie="$(groups pi | cut -c6-1000 |sed -e 's/\s\+/,/g')"
     usermod -a -G $groupie $username
     groups $username
+    deluser -r pi
     fi
     say_done
 }
