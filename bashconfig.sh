@@ -156,6 +156,18 @@ additional_packages(){
     echo "Install Nano............."; apt install nano
     say_done
   }
+##########################
+
+# Raspberry Pi-specific config
+pi_stuff(){
+  echo -n " Are you configuring a Raspberry pi? (y/n): "; read config_pi
+  if [ "$config_pi" == "y" ]; then
+    groupie="$(groups pi | cut -c6-1000 |sed -e 's/\s\+/,/g')"
+    usermod -a -G $groupie $username
+    groups $username
+    say_done
+}
+
 check_root
 config_host
 config_timezone
@@ -165,3 +177,4 @@ admin_user_ssh_keycheck
 admin_user_ssh_keycheck_2
 secure_ssh
 additional_packages
+pi_stuff
